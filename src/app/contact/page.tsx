@@ -102,7 +102,7 @@ export default function ContactPage() {
             <div className="text-center mb-12">
               <span className="text-[#5D3FD3] mb-2 block">Contact us</span>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-                Let's talk about what<br />you need
+                Let&apos;s talk about what<br />you need
               </h1>
               <p className="text-gray-600 max-w-2xl mx-auto">
                 Our team is always on hand to talk through how we can help be your brand accelerator.

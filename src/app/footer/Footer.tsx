@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="relative container mx-auto px-4 py-16 md:py-24">
         <div className="grid md:grid-cols-2 gap-12">
           <div className="space-y-8">
-            <h2 className="text-5xl md:text-7xl font-serif text-[#5D3FD3]">Let's get talking</h2>
+            <h2 className="text-5xl md:text-7xl font-serif text-[#5D3FD3]">Let&apos;s get talking</h2>
             <p className="text-gray-600 max-w-md">
               We want you to be the best in what you do, so book in to speak to our experts today.
             </p>
