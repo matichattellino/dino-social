@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Instagram, Heart, Menu, Building2, Building, Store, Plus, ArrowRight, CircleDot } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import Footer from '@/app/footer/Footer'
 
 interface Client {
@@ -16,7 +16,7 @@ interface Client {
 }
 
 function ClientsSection() {
-  const clients: Client[] = [
+  const clients: Client[] = useMemo(() => [
     {
       name: "FARMACIA GRIMALDI",
       icon: Building2,
@@ -38,7 +38,7 @@ function ClientsSection() {
       description: "Increase your reach",
       showPlus: true
     }
-  ]
+  ], [])
 
   const [counts, setCounts] = useState(clients.map(() => 0))
   const [isVisible, setIsVisible] = useState(false)
@@ -144,14 +144,14 @@ function WhatWeDoSection() {
             
             <div className="prose max-w-[600px]">
               <p className="text-[#333333]/80">
-                With over 25 years of combined experience working agency-side, we've learned a few tricks. 
+                With over 25 years of combined experience working agency-side, we&apos;ve learned a few tricks. 
                 Our knowledge spans creative, web and digital marketing. We use this collective know-how 
                 to grow your business without breaking the bank.
               </p>
               <h3 className="text-[#5D3FD3] mt-8 mb-4">How do we do that?</h3>
               <p className="text-[#333333]/80">
-                We don't over-charge. We don't tell you you need something when you don't, 
-                we don't have super fancy offices you just pay for the work. It's that simple.
+                We don&apos;t over-charge. We don&apos;t tell you you need something when you don&apos;t, 
+                we don&apos;t have super fancy offices you just pay for the work. It&apos;s that simple.
               </p>
             </div>
 
@@ -228,9 +228,9 @@ export function LandingPage() {
     <div className="min-h-screen bg-[#F5F5F5] overflow-x-hidden">
       <header className="flex items-center justify-between p-4 md:p-6 max-w-7xl mx-auto relative">
         <div className="flex items-center">
-        <Link href="/" className="text-2xl font-bold animate-gradient-text">
-          dino social
-        </Link>
+          <Link href="/" className="text-2xl font-bold animate-gradient-text">
+            dino social
+          </Link>
           <div 
             className={`transition-all duration-[5000ms] ease-in-out transform ${
               isDinoVisible ? 'opacity-100' : 'opacity-0'
@@ -257,13 +257,13 @@ export function LandingPage() {
             <Link href="#about" className="text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors">About</Link>
             <Link href="#careers" className="text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors">Careers</Link>
             <Link href="/contact">
-            <Button 
-              variant="outline" 
-              className="border-[#5D3FD3] text-[#5D3FD3] hover:bg-[#5D3FD3] hover:text-white"
-            >
-              Get in touch
-            </Button>
-          </Link>
+              <Button 
+                variant="outline" 
+                className="border-[#5D3FD3] text-[#5D3FD3] hover:bg-[#5D3FD3] hover:text-white"
+              >
+                Get in touch
+              </Button>
+            </Link>
           </nav>
           
           <Button
@@ -288,13 +288,13 @@ export function LandingPage() {
             We help e-commerce brands scale by bringing data driven decisions and creativity together for a full-funnel marketing approach.
           </p>
           <Link href="/contact">
-          <Button 
-            size="lg" 
-            className="bg-[#4DFF4D] hover:bg-[#E6F54D] text-black"
-          >
-            Get in touch
-          </Button>
-        </Link>
+            <Button 
+              size="lg" 
+              className="bg-[#4DFF4D] hover:bg-[#E6F54D] text-black"
+            >
+              Get in touch
+            </Button>
+          </Link>
         </div>
 
         <div className="relative w-full lg:w-1/2 flex justify-center items-center">
@@ -391,8 +391,7 @@ export function LandingPage() {
 
       <ClientsSection />
       <WhatWeDoSection />
- {/* Updated About Section with ClientsSection background */}
- <section className="w-full bg-[#5D3FD3]/5 py-16 md:py-24">
+      <section className="w-full bg-[#5D3FD3]/5 py-16 md:py-24">
         <div className="container px-4 md:px-6 max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden">
@@ -408,13 +407,13 @@ export function LandingPage() {
             
             <div className="space-y-6">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#5D3FD3]">
-                We're called dino social for a reason
+                We&apos;re called dino social for a reason
               </h2>
               <h3 className="text-xl md:text-2xl text-[#5D3FD3]/90">
                 We are a small team of creatives who want to see digital work done well.
               </h3>
               <p className="text-[#5D3FD3]/80 text-lg">
-                We've built processes and formed strong values which have become the foundations of dino social. 
+                We&apos;ve built processes and formed strong values which have become the foundations of dino social. 
                 We may not be related, but we certainly are family and we believe that everyone deserves amazing work at a realistic price.
               </p>
               <Button 
@@ -429,10 +428,9 @@ export function LandingPage() {
         </div>
       </section>
 
-            <Footer />
+      <Footer />
 
-
-            <style jsx global>{`
+      <style jsx global>{`
         @keyframes gradient-text {
           0% {
             background-position: 0% 50%;
