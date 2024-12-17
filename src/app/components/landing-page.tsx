@@ -4,8 +4,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Instagram, Heart, Menu, Building2, Building, Store, Plus, ArrowRight, CircleDot } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef, useMemo, forwardRef } from 'react'
 import Footer from '@/app/footer/Footer'
+import { Pricing } from '@/app/components/pricing'
+
 
 interface Client {
   name: string;
@@ -120,7 +122,7 @@ function ClientsSection() {
   )
 }
 
-function WhatWeDoSection() {
+const WhatWeDoSection = forwardRef<HTMLElement>((props, ref) => {
   const brandStrategyItems = [
     "Research & insights",
     "Brand purpose, vision & values",
@@ -129,7 +131,7 @@ function WhatWeDoSection() {
   ]
 
   return (
-    <section className="w-full bg-[#F5F5F5] py-16 md:py-24 overflow-hidden">
+    <section ref={ref} className="w-full bg-[#F5F5F5] py-16 md:py-24 overflow-hidden">
       <div className="container px-4 md:px-6 max-w-6xl mx-auto">
         <div className="grid gap-8 lg:gap-12 lg:grid-cols-[1fr,auto] items-start">
           <div className="space-y-8">
@@ -204,12 +206,16 @@ function WhatWeDoSection() {
       </div>
     </section>
   )
-}
+})
+
+WhatWeDoSection.displayName = 'WhatWeDoSection'
 
 export function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isDinoVisible, setIsDinoVisible] = useState(false)
+  const whatWeDoRef = useRef<HTMLElement>(null)
+  const pricingRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -253,9 +259,17 @@ export function LandingPage() {
         
         <div className="flex items-center">
           <nav className={`${isMenuOpen ? 'flex' : 'hidden'} md:flex absolute md:relative top-full right-0 md:top-auto bg-white md:bg-transparent flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6 p-4 md:p-0 shadow-lg md:shadow-none z-50`}>
-            <Link href="#services" className="text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors">Services</Link>
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                whatWeDoRef.current?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors cursor-pointer"
+            >
+              Services
+            </a>
             <Link href="#about" className="text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors">About</Link>
-            <Link href="#careers" className="text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors">Careers</Link>
+            <Link href="/cotizador" className="text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors">Cotizador</Link>
             <Link href="/contact">
               <Button 
                 variant="outline" 
@@ -304,7 +318,7 @@ export function LandingPage() {
                 <div className="absolute inset-0 bg-[#E6F54D]/40 translate-x-3 translate-y-3 rounded-lg blur-sm"></div>
                 <div className="relative bg-white border-2 border-[#5D3FD3] rounded-lg p-7 h-[110px] overflow-hidden hover:shadow-lg transition-all duration-300 group-hover:border-[#4DFF4D]">
                   <div className="absolute inset-0 opacity-[0.03]">
-                    <div  className="w-full h-full grid grid-cols-[repeat(32,1fr)] gap-0.5">
+                    <div className="w-full h-full grid grid-cols-[repeat(32,1fr)] gap-0.5">
                       {Array(32).fill(0).map((_, i) => (
                         <div key={i} className="w-full h-full flex flex-col gap-0.5">
                           {Array(16).fill(0).map((_, j) => (
@@ -378,11 +392,11 @@ export function LandingPage() {
                   />
                 </svg>
               </div>
-              <div className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-16  lg:h-16 border-2 border-[#5D3FD3] rounded-lg flex items-center justify-center animate-slide-up opacity-0 hover:border-[#4DFF4D] transition-colors ${isVisible ? '!opacity-100' : ''}`} style={{ '--delay': '0.6s' } as any}>
+              <div className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 border-2 border-[#5D3FD3] rounded-lg flex items-center justify-center animate-slide-up opacity-0 hover:border-[#4DFF4D] transition-colors ${isVisible ? '!opacity-100' : ''}`} style={{ '--delay': '0.6s' } as any}>
                 <Instagram className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-[#5D3FD3] group-hover:text-[#4DFF4D]" aria-hidden="true" />
               </div>
               <div className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 border-2 border-[#5D3FD3] rounded-lg flex items-center justify-center animate-slide-up opacity-0 hover:border-[#4DFF4D] transition-colors ${isVisible ? '!opacity-100' : ''}`} style={{ '--delay': '0.7s' } as any}>
-                <Heart className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-[#5D3FD3] " aria-hidden="true" />
+                <Heart className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-[#5D3FD3]" aria-hidden="true" />
               </div>
             </div>
           </div>
@@ -390,7 +404,8 @@ export function LandingPage() {
       </main>
 
       <ClientsSection />
-      <WhatWeDoSection />
+      <WhatWeDoSection ref={whatWeDoRef} />
+      <Pricing ref={pricingRef} />
       <section className="w-full bg-[#5D3FD3]/5 py-16 md:py-24">
         <div className="container px-4 md:px-6 max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">

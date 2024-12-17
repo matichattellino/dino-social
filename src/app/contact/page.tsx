@@ -12,7 +12,7 @@ import { useState, useEffect } from 'react'
 export default function ContactPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isDinoVisible, setIsDinoVisible] = useState(false)
-  const [selectedServices, setSelectedServices] = useState<string[]>([])
+  const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     const dinoTimer = setTimeout(() => {
@@ -30,18 +30,21 @@ export default function ContactPage() {
 
   const toggleService = (serviceId: string) => {
     setSelectedServices(prev => {
-      if (prev.includes(serviceId)) {
-        return prev.filter(id => id !== serviceId)
+      const newSet = new Set(prev)
+      if (newSet.has(serviceId)) {
+        newSet.delete(serviceId)
       } else {
-        return [...prev, serviceId]
+        newSet.add(serviceId)
       }
+      return newSet
     })
   }
 
+  const isServiceSelected = (serviceId: string) => selectedServices.has(serviceId)
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('Selected services:', selectedServices)
-    // Handle form submission
+    console.log('Selected services:', Array.from(selectedServices))
   }
 
   return (
@@ -113,13 +116,13 @@ export default function ContactPage() {
             </div>
 
             <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-12">
-              <a href="tel:0117 256 5030" className="text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors cursor-pointer">
+              <a href="tel:0117 256 5030" className="text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors">
                 0117 256 5030
               </a>
-              <a href="mailto:hello@company.com" className="text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors cursor-pointer">
+              <a href="mailto:hello@company.com" className="text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors">
                 hello@company.com
               </a>
-              <Button className="bg-[#4DFF4D] hover:bg-[#E6F54D] text-black gap-2 cursor-pointer">
+              <Button className="bg-[#4DFF4D] hover:bg-[#E6F54D] text-black gap-2">
                 Book a call with us
                 <ArrowRight className="w-4 h-4" />
               </Button>
@@ -203,20 +206,27 @@ export default function ContactPage() {
               <div className="space-y-4">
                 <Label className="text-[#5D3FD3] text-lg">Services required</Label>
                 <div className="flex flex-col md:grid md:grid-cols-2 gap-3">
-                  {services.map((service) => (
-                    <button
-                      key={service.id}
-                      type="button"
-                      onClick={() => toggleService(service.id)}
-                      className={`w-full px-6 py-4 md:py-2 rounded-full border-2 transition-colors cursor-pointer text-center ${
-                        selectedServices.includes(service.id)
-                          ? 'border-[#4DFF4D] bg-[#4DFF4D]/10 text-black'
-                          : 'border-[#4DFF4D] hover:bg-[#4DFF4D]/10 text-gray-600'
-                      }`}
-                    >
-                      {service.name}
-                    </button>
-                  ))}
+                  {services.map((service) => {
+                    const isSelected = isServiceSelected(service.id)
+                    return (
+                      <button
+                        key={service.id}
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          toggleService(service.id)
+                        }}
+                        className={`w-full px-6 py-4 md:py-2 rounded-full border-2 border-[#4DFF4D] transition-all duration-200
+                          ${isSelected 
+                            ? 'bg-[#4DFF4D] text-black' 
+                            : 'bg-white text-gray-600'
+                          }`}
+                      >
+                        {service.name}
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
 
@@ -236,7 +246,7 @@ export default function ContactPage() {
 
               <Button 
                 type="submit" 
-                className="w-full bg-[#4DFF4D] hover:bg-[#E6F54D] text-black h-16 rounded-xl cursor-pointer"
+                className="w-full bg-[#4DFF4D] hover:bg-[#E6F54D] text-black h-16 rounded-xl"
               >
                 Send Message
               </Button>
