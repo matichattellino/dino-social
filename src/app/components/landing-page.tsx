@@ -2,12 +2,12 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Instagram, Heart, Menu, Building2, Building, Store, Plus, ArrowRight, CircleDot } from 'lucide-react'
+import { Instagram, Heart, Menu, X, Building2, Building, Store, Plus, ArrowRight, CircleDot } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useState, useEffect, useRef, useMemo, forwardRef } from 'react'
 import Footer from '@/app/footer/Footer'
 import { Pricing } from '@/app/components/pricing'
-
+import { cn } from '@/lib/utils'
 
 interface Client {
   name: string;
@@ -230,9 +230,21 @@ export function LandingPage() {
     }
   }, [])
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'visible'
+    }
+
+    return () => {
+      document.body.style.overflow = 'visible'
+    }
+  }, [isMenuOpen])
+
   return (
     <div className="min-h-screen bg-[#F5F5F5] overflow-x-hidden">
-      <header className="flex items-center justify-between p-4 md:p-6 max-w-7xl mx-auto relative">
+      <header className="flex items-center justify-between p-4 md:p-6 max-w-7xl mx-auto relative z-50">
         <div className="flex items-center">
           <Link href="/" className="text-2xl font-bold animate-gradient-text">
             dino social
@@ -258,7 +270,51 @@ export function LandingPage() {
         </div>
         
         <div className="flex items-center">
-          <nav className={`${isMenuOpen ? 'flex' : 'hidden'} md:flex absolute md:relative top-full right-0 md:top-auto bg-white md:bg-transparent flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6 p-4 md:p-0 shadow-lg md:shadow-none z-50`}>
+          <nav className={cn(
+            "fixed inset-0 flex flex-col items-center justify-center bg-[#F5F5F5] transition-all duration-300 ease-in-out z-50",
+            isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+          )}>
+            <div className="space-y-6 text-center">
+              <a
+                onClick={(e) => {
+                  e.preventDefault();
+                  whatWeDoRef.current?.scrollIntoView({ behavior: 'smooth' });
+                  setIsMenuOpen(false);
+                }}
+                className="block text-2xl text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors cursor-pointer"
+              >
+                Services
+              </a>
+              <Link href="#about" className="block text-2xl text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors" onClick={() => setIsMenuOpen(false)}>About</Link>
+              <Link href="/cotizador" className="block text-2xl text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors" onClick={() => setIsMenuOpen(false)}>Cotizador</Link>
+              <Link href="/contact" onClick={() => setIsMenuOpen(false)}>
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  className="mt-4 border-[#5D3FD3] text-[#5D3FD3] hover:bg-[#5D3FD3] hover:text-white"
+                >
+                  Get in touch
+                </Button>
+              </Link>
+            </div>
+          </nav>
+          
+          <Button
+            variant="ghost"
+            size="icon"
+            className="relative z-50 md:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-expanded={isMenuOpen}
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </Button>
+
+          <nav className="hidden md:flex items-center space-x-6">
             <a
               onClick={(e) => {
                 e.preventDefault();
@@ -279,17 +335,6 @@ export function LandingPage() {
               </Button>
             </Link>
           </nav>
-          
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden ml-4"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-expanded={isMenuOpen}
-            aria-label="Toggle menu"
-          >
-            <Menu className="w-6 h-6" />
-          </Button>
         </div>
       </header>
 
@@ -524,3 +569,4 @@ export function LandingPage() {
     </div>
   )
 }
+
