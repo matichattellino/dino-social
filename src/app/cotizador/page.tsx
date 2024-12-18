@@ -50,7 +50,7 @@ export default function CotizadorPage() {
             <nav className={`${isMenuOpen ? 'flex' : 'hidden'} md:flex absolute md:relative top-full right-0 md:top-auto bg-white md:bg-transparent flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6 p-4 md:p-0 shadow-lg md:shadow-none z-50`}>
               <Link href="/#services" className="text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors">Services</Link>
               <Link href="/#about" className="text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors">About</Link>
-              <Link href="/#careers" className="text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors">Careers</Link>
+              <Link href="/#cotizador" className="text-[#5D3FD3] hover:text-[#4DFF4D] transition-colors">Cotizador</Link>
               <Link href="/contact">
                 <Button 
                   variant="outline" 
