@@ -62,7 +62,7 @@ const Pricing = forwardRef<HTMLElement>((props, ref) => {
     // Aquí puedes añadir cualquier otra lógica necesaria al continuar
   };
 
-  const SelectedPlansDisplay = ({ isMobile, onContinue }: { isMobile: boolean; onContinue: () => void }) => (
+  const SelectedPlansDisplay = ({ isMobile, onContinue }: { isMobile: boolean; onContinue?: () => void }) => (
     <div className="space-y-4">
       <h3 className="font-bold text-lg">Planes Seleccionados</h3>
       {Object.entries(selectedPlans).map(([type, plan]) => (
@@ -303,7 +303,7 @@ const Pricing = forwardRef<HTMLElement>((props, ref) => {
           {!isMobile && (
             <div className="lg:w-1/3 lg:sticky lg:top-4 lg:h-fit">
               <div className="bg-gray-100 rounded-lg p-6">
-                <SelectedPlansDisplay isMobile={false} />
+                <SelectedPlansDisplay isMobile={false} onContinue={() => {}} />
               </div>
             </div>
           )}
